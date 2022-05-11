@@ -2,6 +2,8 @@ package net.diploma.jwtapp.security;
 
 import lombok.extern.slf4j.Slf4j;
 import net.diploma.jwtapp.model.User;
+import net.diploma.jwtapp.security.jwt.JwtUser;
+import net.diploma.jwtapp.security.jwt.JwtUserFactory;
 import net.diploma.jwtapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,6 +28,8 @@ public class JwtUserDetailsService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("User with username: " + username + " not found");
         }
-        return null;
+        JwtUser jwtUser = JwtUserFactory.create(user);
+        log.info("IN loadUserByUsername - user with username: {} successfully loaded", username);
+        return jwtUser;
     }
 }
